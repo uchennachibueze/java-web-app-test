@@ -19,8 +19,18 @@ pipeline {
           // println "Previous Build Number: ${previousBuild.number}"
           println "GIT_COMMIT: ${env.GIT_COMMIT}"
 
+         
           if (previousBuild != null) {
+
               def changeSets = previousBuild.getChangeSets()
+              def result = previousBuild.getResult()
+              if (result == 'FAILURE') {
+                failedBuilds << previousBuild.getNumber()
+                script.echo "Failed Build List: $failedBuilds"
+              } else if (result == hudson.model.Result.SUCCESS) {
+                  failedBuilds = []
+                  script.echo "Failed Build Reset: $failedBuilds"
+              }
               for (changeSet in changeSets) {
                   for (entry in changeSet.getItems()) {
                       println "Commit: ${entry.commitId}"
