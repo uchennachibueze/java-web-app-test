@@ -31,8 +31,9 @@ pipeline {
                   failedBuilds = []
                   println "Failed Build Reset: $failedBuilds"
               }
+previosuBuil.
               for (changeSet in changeSets) {
-                  for (entry in changeSet.getItem()) {
+                  for (entry in changeSet.getItems()) {
                       println "Commit: ${entry.commitId}"
                       println "Author: ${entry.author}"
                       println "Message: ${entry.msg}"
