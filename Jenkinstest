@@ -32,7 +32,7 @@ pipeline {
                   println "Failed Build Reset: $failedBuilds"
               }
               for (changeSet in changeSets) {
-                  for (entry in changeSet.getItems()) {
+                  for (entry in changeSet.getItems().) {
                       println "Commit: ${entry.commitId}"
                       println "Author: ${entry.author}"
                       println "Message: ${entry.msg}"
