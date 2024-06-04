@@ -10,7 +10,7 @@ pipeline {
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
           def previousBuild = currentBuild.previousBuild
-          def previousBuildNumber = previousBuild.Number
+          def previousBuildNumber = previousBuild.number
           def specificBuild = Jenkins.instance.getItemByFullName(env.JOB_NAME).getBuildByNumber(previousBuildNumber)
           println "Previous Build: ${previousBuild}"
           println "Previous Build Result: ${previousBuild.result}"
