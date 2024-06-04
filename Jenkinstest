@@ -39,7 +39,8 @@ pipeline {
                       println "Message: ${entry.msg}"
                     }
                 }
-            //} else {
+            } 
+          //else {
               //  println "Build number ${buildNumber} not found."
             //}
         }
