@@ -9,17 +9,18 @@ pipeline {
         script {
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
-          def previousBuild = currentBuild.previousBuild
-          def previousBuildNumber = previousBuild.number
+          // def previousBuild = currentBuild.previousBuild
+          def previousBuild = currentBuild.rawBuild.getPreviousBuild()
+          def previousBuildNumber = previousBuild.getNumber
           println "PRev: ${previousBuildNumber}"
           def specificBuild = Jenkins.instance.getItemByFullName(env.JOB_NAME).getBuildByNumber(previousBuildNumber)
           println "Previous Build: ${previousBuild}"
-          println "Previous Build Result: ${previousBuild.result}"
-          println "Previous Build Number: ${previousBuild.number}"
+          // println "Previous Build Result: ${previousBuild.result}"
+          // println "Previous Build Number: ${previousBuild.number}"
           println "GIT_COMMIT: ${env.GIT_COMMIT}"
 
-          if (specificBuild != null) {
-              def changeSets = specificBuild.getChangeSets()
+          if (previousBuild != null) {
+              def changeSets = previousBuild.getChangeSets()
               for (changeSet in changeSets) {
                   for (entry in changeSet.getItems()) {
                       println "Commit: ${entry.commitId}"
