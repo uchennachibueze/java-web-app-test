@@ -21,7 +21,7 @@ pipeline {
 
          
           if (previousBuild != null) {
-
+              def failedBuilds = []
               def changeSets = previousBuild.getChangeSets()
               def result = previousBuild.getResult()
               if (result == 'FAILURE') {
