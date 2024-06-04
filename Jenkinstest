@@ -26,10 +26,10 @@ pipeline {
               def result = previousBuild.getResult()
               if (result == 'FAILURE') {
                 failedBuilds << previousBuild.getNumber()
-                script.echo "Failed Build List: $failedBuilds"
+                println "Failed Build List: $failedBuilds"
               } else if (result == hudson.model.Result.SUCCESS) {
                   failedBuilds = []
-                  script.echo "Failed Build Reset: $failedBuilds"
+                  println "Failed Build Reset: $failedBuilds"
               }
               for (changeSet in changeSets) {
                   for (entry in changeSet.getItems()) {
