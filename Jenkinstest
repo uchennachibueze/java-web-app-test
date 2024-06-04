@@ -1,6 +1,20 @@
-import hudson.model.*
-import hudson.plugins.git.*
+// import hudson.model.*
+// import hudson.plugins.git.*
 
+pipeline {
+  agent any
+  stages {
+    stage('Test') {
+      steps {
+        def ln = System.getProperty('line.separator')
+        println "---------------Groovy Changelog script Started---------------$ln"
+        def previousBuild = currentBuild.previousBuild
+        println "Previous Build: ${previousBuild}"
+        println "Previous Build Result: ${previousBuild.result}"
+        println "Previous Build Number: ${previousBuild.number}"
+      }
+    }
+}
 def ln = System.getProperty('line.separator')
 println "---------------Groovy Changelog script Started---------------$ln"
 
@@ -10,9 +24,7 @@ def previousBuild = currentBuild.previousBuild
 
 // println "Last Successful Build: ${lastSuccessfulBuild}"
 // println "Current Build Result, is failed?: ${failed}"
-println "Previous Build: ${previousBuild}"
-println "Previous Build Result: ${previousBuild.result}"
-println "Previous Build Number: ${previousBuild.number}"
+
 
 // def currResult = build.result
 // def prevResult = build.previousBuild?.result ?: null
