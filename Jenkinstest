@@ -20,7 +20,7 @@ pipeline {
           println "GIT_COMMIT: ${env.GIT_COMMIT}"
 
          
-          if (previousBuild != null) {
+          while (previousBuild != null) {
               def failedBuilds = []
               def changeSets = previousBuild.getChangeSets()
               def result = previousBuild.getResult()
@@ -30,6 +30,7 @@ pipeline {
               } else if (result == 'SUCCESS') {
                   failedBuilds = []
                   println "Failed Build Reset: $failedBuilds"
+                  break
               }
               for (changeSet in changeSets) {
                   for (entry in changeSet.getItems()) {
