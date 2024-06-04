@@ -10,10 +10,25 @@ pipeline {
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
           def previousBuild = currentBuild.previousBuild
+          def previousBuildNumber = previousBuild.Number
+          def specificBuild = Jenkins.instance.getItemByFullName(env.JOB_NAME).getBuildByNumber(previousBuildNumber)
           println "Previous Build: ${previousBuild}"
           println "Previous Build Result: ${previousBuild.result}"
           println "Previous Build Number: ${previousBuild.number}"
-          println "GIT_COMMIT: ${env.GIT_COMMIT}"
+          println "GIT_COMMIT: ${env.GIT_COMMIT}
+
+          if (specificBuild != null) {
+              def changeSets = specificBuild.getChangeSets()
+              for (changeSet in changeSets) {
+                  for (entry in changeSet.getItems()) {
+                      println "Commit: ${entry.commitId}"
+                      println "Author: ${entry.author}"
+                      println "Message: ${entry.msg}"
+                    }
+                }
+            } else {
+                println "Build number ${buildNumber} not found."
+            }
         }
       }
     }
