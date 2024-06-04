@@ -27,7 +27,7 @@ pipeline {
               if (result == 'FAILURE') {
                 failedBuilds << previousBuild.getNumber()
                 println "Failed Build List: $failedBuilds"
-              } else if (result == hudson.model.Result.SUCCESS) {
+              } else if (result == 'SUCCESS') {
                   failedBuilds = []
                   println "Failed Build Reset: $failedBuilds"
               }
