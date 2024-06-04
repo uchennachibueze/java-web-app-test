@@ -20,7 +20,7 @@ pipeline {
           println "GIT_COMMIT: ${env.GIT_COMMIT}"
 
          
-          while (previousBuild != null) {
+          if (previousBuild != null) {
               def failedBuilds = []
               def changeSets = previousBuild.getChangeSets()
               def result = previousBuild.getResult()
@@ -30,7 +30,6 @@ pipeline {
               } else if (result == 'SUCCESS') {
                   failedBuilds = []
                   println "Failed Build Reset: $failedBuilds"
-                  break
               }
               for (changeSet in changeSets) {
                   for (entry in changeSet.getItems()) {
@@ -39,10 +38,9 @@ pipeline {
                       println "Message: ${entry.msg}"
                     }
                 }
-            } 
-          //else {
-              //  println "Build number ${buildNumber} not found."
-            //}
+            } else {
+                println "Build number ${buildNumber} not found."
+            }
         }
       }
     }
