@@ -9,7 +9,7 @@ pipeline {
         script {
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
-          def previousBuild = currentBuild.previousBuildl
+          def previousBuild = currentBuild.previousBuild
           // def previousBuild = currentBuild.rawBuild.getPreviousBuild()
           // def previousBuildNumber = previousBuild.getNumber()
           // println "PRev: ${previousBuildNumber}"
