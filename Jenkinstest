@@ -6,12 +6,14 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        def ln = System.getProperty('line.separator')
-        println "---------------Groovy Changelog script Started---------------$ln"
-        def previousBuild = currentBuild.previousBuild
-        println "Previous Build: ${previousBuild}"
-        println "Previous Build Result: ${previousBuild.result}"
-        println "Previous Build Number: ${previousBuild.number}"
+        script {
+          def ln = System.getProperty('line.separator')
+          println "---------------Groovy Changelog script Started---------------$ln"
+          def previousBuild = currentBuild.previousBuild
+          println "Previous Build: ${previousBuild}"
+          println "Previous Build Result: ${previousBuild.result}"
+          println "Previous Build Number: ${previousBuild.number}"
+        }
       }
     }
   }
