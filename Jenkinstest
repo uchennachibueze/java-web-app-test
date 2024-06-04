@@ -11,6 +11,7 @@ pipeline {
           println "---------------Groovy Changelog script Started---------------$ln"
           def previousBuild = currentBuild.previousBuild
           def previousBuildNumber = previousBuild.number
+          println "PRev: ${previousBuildNumber}"
           def specificBuild = Jenkins.instance.getItemByFullName(env.JOB_NAME).getBuildByNumber(previousBuildNumber)
           println "Previous Build: ${previousBuild}"
           println "Previous Build Result: ${previousBuild.result}"
