@@ -16,12 +16,12 @@ pipeline {
     }
   }
 }
-def ln = System.getProperty('line.separator')
-println "---------------Groovy Changelog script Started---------------$ln"
+// def ln = System.getProperty('line.separator')
+// println "---------------Groovy Changelog script Started---------------$ln"
 
 // def lastSuccessfulBuild = build.previousNotFailedBuild
 // def failed = build.result != hudson.model.Result.SUCCESS
-def previousBuild = currentBuild.previousBuild
+// def previousBuild = currentBuild.previousBuild
 
 // println "Last Successful Build: ${lastSuccessfulBuild}"
 // println "Current Build Result, is failed?: ${failed}"
