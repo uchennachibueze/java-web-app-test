@@ -13,6 +13,7 @@ pipeline {
           println "Previous Build: ${previousBuild}"
           println "Previous Build Result: ${previousBuild.result}"
           println "Previous Build Number: ${previousBuild.number}"
+          println "GIT_COMMIT: ${env.GIT_COMMIT}"
         }
       }
     }
