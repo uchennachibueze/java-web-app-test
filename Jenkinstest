@@ -14,10 +14,10 @@ pipeline {
     stage('Test') {
       steps {
         script {
-          def failedBuilds = getFailedBuilds(JOB_NAME)
+          def failedBuildsCheck = getFailedBuilds(JOB_NAME)
           // Output the failed builds
           println "Failed builds for job 'your-job-name':"
-          failedBuilds.each { build ->
+          failedBuildsCheck.each { build ->
             println "Build #${build.number} - ${build.getTimestampString()}"
           }
           def ln = System.getProperty('line.separator')
@@ -45,7 +45,7 @@ pipeline {
   //                failedBuilds = []
     //              println "Failed Build Reset: $failedBuilds"
       //        }
-previosuBuil.
+
               for (changeSet in changeSets) {
                   for (entry in changeSet.getItems()) {
                       println "Commit: ${entry.commitId}"
