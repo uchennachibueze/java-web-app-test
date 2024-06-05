@@ -15,10 +15,12 @@ pipeline {
       steps {
         script {
           def failedBuildsCheck = getLastFailedSequence(JOB_NAME)
+          def failedBuildNumbers = []
           // Output the failed builds
           println "Failed builds for job ${JOB_NAME}:"
           failedBuildsCheck.each { build ->
-            // println "Build #${build.number}"
+            println "Build #${build.number}"
+            failedBuildNumbers << build.number
           }
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
@@ -39,7 +41,7 @@ pipeline {
               def result = previousBuild.getResult()
               if (result == 'FAILURE') {
                 failedBuilds << previousBuild.getNumber()
-                println "Failed Build List: $failedBuilds"
+                //println "Failed Build List: $failedBuilds"
               } 
 //else if (result == 'SUCCESS') {
   //                failedBuilds = []
