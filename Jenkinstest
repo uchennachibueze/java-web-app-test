@@ -14,6 +14,12 @@ pipeline {
     stage('Test') {
       steps {
         script {
+          def failedBuilds = getFailedBuilds(JOB_NAME)
+          // Output the failed builds
+          println "Failed builds for job 'your-job-name':"
+          failedBuilds.each { build ->
+            println "Build #${build.number} - ${build.getTimestampString()}"
+          }
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
           def previousBuild = currentBuild.previousBuild
@@ -116,3 +122,29 @@ previosuBuil.
 //     println "commitId: $item.commitId$ln"
 //     println "timestamp: $item.timestamp$ln"
 // }
+@NonCPS
+def getFailedBuilds(jobName) {
+    // Get the Jenkins instance
+    def jenkins = Jenkins.instance
+
+    // Get the job
+    def job = jenkins.getItemByFullName(jobName)
+
+    // Initialize a list to hold failed builds
+    def failedBuilds = []
+
+    if (job) {
+        // Iterate through all builds of the job
+        job.getBuilds().each { build ->
+            // Check if the build result is FAILURE
+            if (build.result == Result.FAILURE) {
+                // Add the failed build to the list
+                failedBuilds << build
+            }
+        }
+    } else {
+        echo "Job '${jobName}' not found."
+    }
+
+    return failedBuilds
+}
