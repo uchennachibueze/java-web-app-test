@@ -16,9 +16,9 @@ pipeline {
         script {
           def failedBuildsCheck = getFailedBuilds(JOB_NAME)
           // Output the failed builds
-          println "Failed builds for job JOB_NAME:"
+          println "Failed builds for job ${JOB_NAME}:"
           failedBuildsCheck.each { build ->
-            println "Build #${build.number} - ${build.getTimestampString()}"
+            println "Build #${build.number}"
           }
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
