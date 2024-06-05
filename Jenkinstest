@@ -11,6 +11,7 @@ pipeline {
         }
       }
     }
+ggg
     stage('Test') {
       steps {
         script {
@@ -123,36 +124,41 @@ pipeline {
 //     println "timestamp: $item.timestamp$ln"
 // }
 @NonCPS
-def getFailedBuilds(jobName) {
+def getFailedSequences(jobName) {
     // Get the Jenkins instance
     def jenkins = Jenkins.instance
 
     // Get the job
     def job = jenkins.getItemByFullName(jobName)
 
-    // Initialize a list to hold failed builds
-    def failedBuilds = []
-    // Variable to track if a successful build has been encountered
-    boolean encounteredSuccess = false
+    // Initialize a list to hold the current sequence of failed builds
+    def currentFailedBuilds = []
+    // Initialize a list to hold all sequences of failed builds
+    def allFailedSequences = []
 
     if (job) {
-        // Iterate through all builds of the job
-        job.getBuilds().each { build ->
-            // Check if the build result is FAILURE
+        // Iterate through all builds of the job in reverse order (most recent first)
+        job.getBuilds().reverse().each { build ->
             if (build.result == Result.FAILURE) {
-                // Add the failed build to the list only if no success has been encountered yet
-                if (!encounteredSuccess) {
-                    failedBuilds << build
-                }
+                // Add the failed build to the current sequence
+                currentFailedBuilds << build
             } else if (build.result == Result.SUCCESS) {
-                // A successful build has been encountered, reset the list
-                failedBuilds = []
-                encounteredSuccess = true
+                // If a successful build is found and currentFailedBuilds is not empty, add it to the allFailedSequences
+                if (!currentFailedBuilds.isEmpty()) {
+                    allFailedSequences << currentFailedBuilds
+                    // Reset the currentFailedBuilds list
+                    currentFailedBuilds = []
+                }
             }
+        }
+
+        // Add any remaining failed builds if no success is encountered at the end
+        if (!currentFailedBuilds.isEmpty()) {
+            allFailedSequences << currentFailedBuilds
         }
     } else {
         echo "Job '${jobName}' not found."
     }
 
-    return failedBuilds
+    return allFailedSequences
 }
