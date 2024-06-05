@@ -132,22 +132,22 @@ def getFailedBuilds(jobName) {
 
     // Initialize a list to hold failed builds
     def failedBuilds = []
-    // Variable to track if the last build was successful
-    boolean lastBuildSuccessful = false
+    // Variable to track if a successful build has been encountered
+    boolean encounteredSuccess = false
 
     if (job) {
-        // Iterate through all builds of the job in reverse order (most recent first)
-        job.getBuilds().reverse().each { build ->
+        // Iterate through all builds of the job
+        job.getBuilds().each { build ->
             // Check if the build result is FAILURE
             if (build.result == Result.FAILURE) {
-                if (!lastBuildSuccessful) {
-                    // Add the failed build to the list
+                // Add the failed build to the list only if no success has been encountered yet
+                if (!encounteredSuccess) {
                     failedBuilds << build
                 }
             } else if (build.result == Result.SUCCESS) {
-                // Reset the failed builds list and set the flag
+                // A successful build has been encountered, reset the list
                 failedBuilds = []
-                lastBuildSuccessful = true
+                encounteredSuccess = true
             }
         }
     } else {
