@@ -11,6 +11,7 @@ pipeline {
         }
       }
     }
+ggg
     stage('Test') {
       steps {
         script {
@@ -123,7 +124,7 @@ pipeline {
 //     println "timestamp: $item.timestamp$ln"
 // }
 @NonCPS
-def getFailedSequences(jobName) {
+def getLastFailedSequence(jobName) {
     // Get the Jenkins instance
     def jenkins = Jenkins.instance
 
@@ -132,8 +133,8 @@ def getFailedSequences(jobName) {
 
     // Initialize a list to hold the current sequence of failed builds
     def currentFailedBuilds = []
-    // Initialize a list to hold all sequences of failed builds
-    def allFailedSequences = []
+    // Initialize a list to hold the last sequence of failed builds
+    def lastFailedSequence = []
 
     if (job) {
         // Iterate through all builds of the job in reverse order (most recent first)
@@ -142,22 +143,22 @@ def getFailedSequences(jobName) {
                 // Add the failed build to the current sequence
                 currentFailedBuilds << build
             } else if (build.result == Result.SUCCESS) {
-                // If a successful build is found and currentFailedBuilds is not empty, add it to the allFailedSequences
+                // If a successful build is found, update the lastFailedSequence
                 if (!currentFailedBuilds.isEmpty()) {
-                    allFailedSequences << currentFailedBuilds
+                    lastFailedSequence = currentFailedBuilds
                     // Reset the currentFailedBuilds list
                     currentFailedBuilds = []
                 }
             }
         }
 
-        // Add any remaining failed builds if no success is encountered at the end
+        // If there are failed builds and no subsequent successful build, update the lastFailedSequence
         if (!currentFailedBuilds.isEmpty()) {
-            allFailedSequences << currentFailedBuilds
+            lastFailedSequence = currentFailedBuilds
         }
     } else {
         echo "Job '${jobName}' not found."
     }
 
-    return allFailedSequences
+    return lastFailedSequence
 }
