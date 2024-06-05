@@ -16,7 +16,7 @@ pipeline {
         script {
           def failedBuildsCheck = getFailedBuilds(JOB_NAME)
           // Output the failed builds
-          println "Failed builds for job 'your-job-name':"
+          println "Failed builds for job JOB_NAME:"
           failedBuildsCheck.each { build ->
             println "Build #${build.number} - ${build.getTimestampString()}"
           }
