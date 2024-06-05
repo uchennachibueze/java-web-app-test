@@ -14,7 +14,7 @@ pipeline {
     stage('Test') {
       steps {
         script {
-          def failedBuildsCheck = getFailedSequences(JOB_NAME)
+          def failedBuildsCheck = getLastFailedSequence(JOB_NAME)
           // Output the failed builds
           println "Failed builds for job ${JOB_NAME}:"
           failedBuildsCheck.each { build ->
