@@ -36,7 +36,7 @@ pipeline {
                     commitHashes << lastBuiltRevision.getSha1String()
                 }
             }
-              //def changeSets = build.getChangeSets()
+              //def changeSets = build.getChangeSet()
               //changeSets.each { changeSet ->
                 //changeSet.each { change ->
                   //  if (change instanceof hudson.plugins.git.GitChangeSet) {
