@@ -27,15 +27,24 @@ pipeline {
             println "Build #${build.number} - ${build.getTimestampString()}"
             failedBuildNumbers << build.number
 
-              def changeSets = build.getChangeSets()
-              changeSets.each { changeSet ->
-                changeSet.each { change ->
-                    if (change instanceof hudson.plugins.git.GitChangeSet) {
-                      commitHashes << change.getCommitId()
-                    }
-                  }
+            // Get commit hashes for this build from the second GitBuildData
+            def gitBuildDataList = build.getActions(BuildData)
+            if (gitBuildDataList.size() > 1) {
+                def gitBuildData = gitBuildDataList[1] // Get the second GitBuildData
+                def lastBuiltRevision = gitBuildData.getLastBuiltRevision()
+                if (lastBuiltRevision instanceof Revision) {
+                    commitHashes << lastBuiltRevision.getSha1String()
                 }
-              }
+            }
+              //def changeSets = build.getChangeSets()
+              //changeSets.each { changeSet ->
+                //changeSet.each { change ->
+                  //  if (change instanceof hudson.plugins.git.GitChangeSet) {
+                    //  commitHashes << change.getCommitId()
+                    //}
+                  //}
+                //}
+          }
 
           // Use the list of failed build numbers
           println "List of failed build numbers: ${failedBuildNumbers}"
