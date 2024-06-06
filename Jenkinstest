@@ -30,7 +30,7 @@ pipeline {
             failedBuildNumbers << build.number
 
             // Get commit hashes for this build from the second GitBuildData
-            def gitBuildDataList = build.getAction(BuildData)
+            def gitBuildDataList = build.getActions(BuildData)
             if (gitBuildDataList.size() > 1) {
                 def gitBuildData = gitBuildDataList[1] // Get the second GitBuildData
                 def lastBuiltRevision = gitBuildData.getLastBuiltRevision()
