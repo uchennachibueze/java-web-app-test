@@ -36,7 +36,6 @@ pipeline {
                   }
                 }
               }
-            }
 
           // Use the list of failed build numbers
           println "List of failed build numbers: ${failedBuildNumbers}"
