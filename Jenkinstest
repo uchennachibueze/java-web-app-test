@@ -28,8 +28,12 @@ pipeline {
             failedBuildNumbers << build.number
 
             def changeSet = build.getChangeSets()
-              changeSet.each { change ->
-                  commitHashes << change.commitId
+              changeSets.each { changeSet ->
+                changeSet.each { change ->
+                  if (change instanceof hudson.plugins.git.GitChangeSet) {
+                    commitHashes << change.getCommitId()
+                  }
+                }
               }
             }
 
