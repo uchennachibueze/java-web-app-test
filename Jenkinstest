@@ -27,7 +27,7 @@ pipeline {
             println "Build #${build.number} - ${build.getTimestampString()}"
             failedBuildNumbers << build.number
 
-              def changeSet = build.getChangeSets()
+              def changeSets = build.getChangeSets()
               changeSets.each { changeSet ->
                 changeSet.each { change ->
                     if (change instanceof hudson.plugins.git.GitChangeSet) {
