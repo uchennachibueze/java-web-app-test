@@ -27,7 +27,7 @@ pipeline {
             println "Build #${build.number} - ${build.getTimestampString()}"
             failedBuildNumbers << build.number
 
-            def changeSet = build.getChangeSet()
+            def changeSet = build.getChangeSets()
               changeSet.each { change ->
                   commitHashes << change.commitId
               }
