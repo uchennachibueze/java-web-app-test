@@ -21,7 +21,7 @@ pipeline {
                     
           // Store the returned value in a list
           def failedBuildNumbers = []
-          def commitHashes = []
+          def commitHashes = new HashSet<String>()
                     
           // Output the last sequence of failed builds and store their numbers
           println "Last sequence of failed builds for job ${JOB_NAME}:"
@@ -30,12 +30,12 @@ pipeline {
             failedBuildNumbers << build.number
 
             // Get commit hashes for this build from the second GitBuildData
-            def gitBuildDataList = build.getActions(BuildData)
+            def gitBuildDataList = build.getAction(BuildData)
             if (gitBuildDataList.size() > 1) {
                 def gitBuildData = gitBuildDataList[1] // Get the second GitBuildData
                 def lastBuiltRevision = gitBuildData.getLastBuiltRevision()
                 if (lastBuiltRevision instanceof Revision) {
-                    commitHashes << lastBuiltRevision.getSha1String()
+                    commitHashes.add(lastBuiltRevision.getSha1String())
                 }
             }
               //def changeSets = build.getChangeSet()
@@ -48,9 +48,12 @@ pipeline {
                 //}
           }
 
+          // Convert the set of commit hashes back to a list for output
+          def uniqueCommitHashes = commitHashes.toList()
+
           // Use the list of failed build numbers
           println "List of failed build numbers: ${failedBuildNumbers}"
-          println "List of commit hashes: ${commitHashes}"
+          println "List of commit hashes: ${uniqueCommitHashes}"
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
           def previousBuild = currentBuild.previousBuild
