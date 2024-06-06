@@ -11,17 +11,25 @@ pipeline {
         }
       }
     }
+hhh
     stage('Test') {
       steps {
         script {
-          def failedBuildsCheck = getLastFailedSequence(JOB_NAME)
+
+          def lastFailedSequence = getLastFailedSequence(JOB_NAME)
+                    
+          // Store the returned value in a list
           def failedBuildNumbers = []
-          // Output the failed builds
-          println "Failed builds for job ${JOB_NAME}:"
-          failedBuildsCheck.each { build ->
-            println "Build #${build.number}"
+                    
+          // Output the last sequence of failed builds and store their numbers
+          println "Last sequence of failed builds for job ${JOB_NAME}:"
+          lastFailedSequence.each { build ->
+            println "Build #${build.number} - ${build.getTimestampString()}"
             failedBuildNumbers << build.number
           }
+
+          // Use the list of failed build numbers
+          println "List of failed build numbers: ${failedBuildNumbers}"
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
           def previousBuild = currentBuild.previousBuild
