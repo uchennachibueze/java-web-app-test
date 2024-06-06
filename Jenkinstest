@@ -1,5 +1,7 @@
 // import hudson.model.*
 // import hudson.plugins.git.*
+import hudson.plugins.git.util.BuildData
+import hudson.plugins.git.Revision
 
 pipeline {
   agent any
