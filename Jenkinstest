@@ -19,16 +19,23 @@ pipeline {
                     
           // Store the returned value in a list
           def failedBuildNumbers = []
+          def commitHashes = []
                     
           // Output the last sequence of failed builds and store their numbers
           println "Last sequence of failed builds for job ${JOB_NAME}:"
           lastFailedSequence.each { build ->
             println "Build #${build.number} - ${build.getTimestampString()}"
             failedBuildNumbers << build.number
-          }
+
+            def changeSet = build.getChangeSet()
+              changeSet.each { change ->
+                  commitHashes << change.commitId
+              }
+            }
 
           // Use the list of failed build numbers
           println "List of failed build numbers: ${failedBuildNumbers}"
+          println "List of commit hashes: ${commitHashes}"
           def ln = System.getProperty('line.separator')
           println "---------------Groovy Changelog script Started---------------$ln"
           def previousBuild = currentBuild.previousBuild
@@ -44,7 +51,7 @@ pipeline {
          
           if (previousBuild != null) {
               def failedBuilds = []
-              def changeSets = previousBuild.getChangeSets()
+              //def changeSets = previousBuild.getChangeSets()
               def result = previousBuild.getResult()
               if (result == 'FAILURE') {
                 failedBuilds << previousBuild.getNumber()
@@ -55,13 +62,13 @@ pipeline {
     //              println "Failed Build Reset: $failedBuilds"
       //        }
 
-              for (changeSet in changeSets) {
-                  for (entry in changeSet.getItems()) {
-                      println "Commit: ${entry.commitId}"
-                      println "Author: ${entry.author}"
-                      println "Message: ${entry.msg}"
-                    }
-                }
+              //for (changeSet in changeSets) {
+                //  for (entry in changeSet.getItems()) {
+                  //    println "Commit: ${entry.commitId}"
+                    //  println "Author: ${entry.author}"
+                      //println "Message: ${entry.msg}"
+                    //}
+                //}
             } else {
                 println "Build number ${buildNumber} not found."
             }
